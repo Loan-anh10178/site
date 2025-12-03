@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 Bé Học Toán Vui 🌈</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Baloo 2', cursive;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+        }
+        
+        .bounce {
+            animation: bounce 0.5s ease infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        
+        .pop {
+            animation: pop 0.3s ease;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .shake {
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .celebrate {
+            animation: celebrate 0.6s ease;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-5deg); }
+            50% { transform: scale(1.3) rotate(5deg); }
+            75% { transform: scale(1.2) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        .star-burst {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2rem;
+            animation: starBurst 1s ease forwards;
+        }
+        
+        @keyframes starBurst {
+            0% { opacity: 1; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
+            100% { opacity: 0; transform: scale(2) rotate(360deg) translateY(-100px); }
+        }
+        
+        .btn-answer {
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 0 #00000030;
+        }
+        
+        .btn-answer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 #00000030;
+        }
+        
+        .btn-answer:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #00000030;
+        }
+        
+        .object-display {
+            transition: all 0.3s ease;
+        }
+        
+        .rainbow-text {
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .cloud {
+            position: absolute;
+            opacity: 0.3;
+            animation: cloudFloat 20s linear infinite;
+        }
+        
+        @keyframes cloudFloat {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100vw); }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Floating Decorations -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="cloud text-8xl" style="top: 10%; left: -10%; animation-delay: 0s;">☁️</div>
+        <div class="cloud text-6xl" style="top: 30%; left: -10%; animation-delay: 5s;">☁️</div>
+        <div class="cloud text-7xl" style="top: 60%; left: -10%; animation-delay: 10s;">☁️</div>
+    </div>
+
+    <div class="container mx-auto px-4 py-6 max-w-2xl relative z-10">
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg mb-2">
+                <span class="float inline-block">🌈</span>
+                <span class="rainbow-text bg-white px-4 py-2 rounded-2xl inline-block">Bé Học Toán Vui</span>
+                <span class="float inline-block" style="animation-delay: 0.5s;">🌈</span>
+            </h1>
+            <div class="flex justify-center gap-2 text-3xl mt-2">
+                <span class="float" style="animation-delay: 0.1s;">⭐</span>
+                <span class="float" style="animation-delay: 0.2s;">🎈</span>
+                <span class="float" style="animation-delay: 0.3s;">🎀</span>
+                <span class="float" style="animation-delay: 0.4s;">🍭</span>
+                <span class="float" style="animation-delay: 0.5s;">⭐</span>
+            </div>
+        </div>
+
+        <!-- Score Board -->
+        <div class="bg-white/90 backdrop-blur rounded-3xl p-4 mb-6 shadow-xl">
+            <div class="flex justify-around items-center">
+                <div class="text-center">
+                    <div class="text-2xl">🏆</div>
+                    <div class="text-lg font-bold text-purple-600">Điểm</div>
+                    <div id="score" class="text-3xl font-extrabold text-yellow-500">0</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl">✅</div>
+                    <div class="text-lg font-bold text-green-600">Đúng</div>
+                    <div id="correct" class="text-3xl font-extrabold text-green-500">0</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl">🎯</div>
+                    <div class="text-lg font-bold text-blue-600">Câu hỏi</div>
+                    <div id="question-num" class="text-3xl font-extrabold text-blue-500">1</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operation Selector -->
+        <div class="bg-white/90 backdrop-blur rounded-3xl p-4 mb-6 shadow-xl">
+            <p class="text-center text-xl font-bold text-purple-700 mb-3">🎮 Chọn phép tính:</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="setOperation('+')" id="btn-add" class="operation-btn bg-gradient-to-r from-pink-400 to-pink-600 text-white px-6 py-3 rounded-2xl text-2xl font-bold shadow-lg hover:scale-110 transition-transform active:scale-95">
+                    ➕ Cộng
+                </button>
+                <button onclick="setOperation('-')" id="btn-sub" class="operation-btn bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-3 rounded-2xl text-2xl font-bold shadow-lg hover:scale-110 transition-transform active:scale-95">
+                    ➖ Trừ
+                </button>
+                <button onclick="setOperation('×')" id="btn-mul" class="operation-btn bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 rounded-2xl text-2xl font-bold shadow-lg hover:scale-110 transition-transform active:scale-95">
+                    ✖️ Nhân
+                </button>
+                <button onclick="setOperation('÷')" id="btn-div" class="operation-btn bg-gradient-to-r from-orange-400 to-orange-600 text-white px-6 py-3 rounded-2xl text-2xl font-bold shadow-lg hover:scale-110 transition-transform active:scale-95">
+                    ➗ Chia
+                </button>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div id="question-card" class="bg-white/95 backdrop-blur rounded-3xl p-6 mb-6 shadow-2xl border-4 border-yellow-300">
+            <!-- Visual Objects -->
+            <div id="visual-display" class="text-center mb-4 min-h-[80px] flex flex-wrap justify-center items-center gap-2">
+                <!-- Objects will be displayed here -->
+            </div>
+            
+            <!-- Question -->
+            <div class="text-center mb-6">
+                <div id="question" class="text-5xl md:text-6xl font-extrabold text-purple-700">
+                    2 + 3 = ?
+                </div>
+            </div>
+
+            <!-- Mascot -->
+            <div id="mascot" class="text-center text-6xl mb-4">
+                🐻
+            </div>
+            <p id="mascot-message" class="text-center text-xl font-bold text-purple-600 mb-4">
+                Bé ơi, kết quả là bao nhiêu nào? 🤔
+            </p>
+
+            <!-- Answer Options -->
+            <div id="answers" class="grid grid-cols-2 gap-4">
+                <!-- Answers will be generated here -->
+            </div>
+        </div>
+
+        <!-- Result Message -->
+        <div id="result-message" class="hidden text-center bg-white/90 backdrop-blur rounded-3xl p-6 mb-6 shadow-xl">
+            <div id="result-icon" class="text-7xl mb-2">🎉</div>
+            <div id="result-text" class="text-2xl font-bold text-green-600">Giỏi lắm bé!</div>
+        </div>
+
+        <!-- Next Button -->
+        <div class="text-center">
+            <button id="next-btn" onclick="generateQuestion()" class="hidden bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-10 py-4 rounded-full text-2xl font-bold shadow-xl hover:scale-110 transition-transform active:scale-95">
+                Câu tiếp theo 👉
+            </button>
+        </div>
+
+        <!-- Reset Button -->
+        <div class="text-center mt-4">
+            <button onclick="resetGame()" class="bg-gradient-to-r from-purple-400 to-purple-600 text-white px-6 py-2 rounded-full text-lg font-bold shadow-lg hover:scale-105 transition-transform">
+                🔄 Chơi lại
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio for correct/wrong (using Web Audio API for simple sounds) -->
+    <script>
+        // Game State
+        let score = 0;
+        let correct = 0;
+        let questionNum = 1;
+        let currentAnswer = 0;
+        let currentOperation = '+';
+        let answered = false;
+
+        const emojis = {
+            '+': ['🍎', '🍊', '🍋', '🍇', '🍓', '🌟', '🎈', '🌸', '🦋', '🐠'],
+            '-': ['🍎', '🍊', '🍋', '🍇', '🍓', '🌟', '🎈', '🌸', '🦋', '🐠'],
+            '×': ['⭐', '❤️', '🌈', '🎀'],
+            '÷': ['🍪', '🍩', '🧁', '🍬']
+        };
+
+        const mascots = ['🐻', '🐰', '🐱', '🐶', '🐼', '🦊', '🐨', '🐯', '🦁', '🐸'];
+        const correctMessages = [
+            'Giỏi lắm bé! 🌟',
+            'Tuyệt vời! 🎉',
+            'Bé thông minh quá! 💖',
+            'Đúng rồi nè! ⭐',
+            'Xuất sắc! 🏆',
+            'Bé làm tốt lắm! 🌈',
+            'Wow! Đáng yêu quá! 💕'
+        ];
+        const wrongMessages = [
+            'Ố ồ, thử lại nha bé! 💪',
+            'Gần đúng rồi, cố lên! 🌟',
+            'Không sao, thử lại nào! 💖'
+        ];
+
+        // Sound effects using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            if (type === 'correct') {
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.4);
+            } else {
+                oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            }
+        }
+
+        function setOperation(op) {
+            currentOperation = op;
+            document.querySelectorAll('.operation-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-yellow-400');
+            });
+            const btnId = {
+                '+': 'btn-add',
+                '-': 'btn-sub',
+                '×': 'btn-mul',
+                '÷': 'btn-div'
+            };
+            document.getElementById(btnId[op]).classList.add('ring-4', 'ring-yellow-400');
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            answered = false;
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('result-message').classList.add('hidden');
+            document.getElementById('question-card').classList.remove('shake', 'celebrate');
+            
+            let num1, num2;
+            
+            switch(currentOperation) {
+                case '+':
+                    num1 = Math.floor(Math.random() * 5) + 1; // 1-5
+                    num2 = Math.floor(Math.random() * 5) + 1; // 1-5
+                    currentAnswer = num1 + num2;
+                    break;
+                case '-':
+                    num1 = Math.floor(Math.random() * 5) + 5; // 5-9
+                    num2 = Math.floor(Math.random() * num1) + 1; // 1 to num1
+                    currentAnswer = num1 - num2;
+                    break;
+                case '×':
+                    num1 = Math.floor(Math.random() * 3) + 1; // 1-3
+                    num2 = Math.floor(Math.random() * 3) + 1; // 1-3
+                    currentAnswer = num1 * num2;
+                    break;
+                case '÷':
+                    num2 = Math.floor(Math.random() * 3) + 1; // 1-3
+                    currentAnswer = Math.floor(Math.random() * 3) + 1; // 1-3
+                    num1 = num2 * currentAnswer;
+                    break;
+            }
+
+            // Display question
+            document.getElementById('question').innerHTML = `${num1} ${currentOperation} ${num2} = <span class="text-pink-500">?</span>`;
+            
+            // Display visual objects
+            displayVisualObjects(num1, num2, currentOperation);
+            
+            // Generate answer options
+            generateAnswerOptions(currentAnswer);
+            
+            // Update mascot
+            const mascot = mascots[Math.floor(Math.random() * mascots.length)];
+            document.getElementById('mascot').textContent = mascot;
+            document.getElementById('mascot-message').textContent = 'Bé ơi, kết quả là bao nhiêu nào? 🤔';
+            
+            // Update question number display
+            document.getElementById('question-num').textContent = questionNum;
+        }
+
+        function displayVisualObjects(num1, num2, operation) {
+            const display = document.getElementById('visual-display');
+            const emojiList = emojis[operation];
+            const emoji = emojiList[Math.floor(Math.random() * emojiList.length)];
+            
+            let html = '';
+            
+            if (operation === '+') {
+                // Show num1 objects + num2 objects
+                for (let i = 0; i < num1; i++) {
+                    html += `<span class="text-3xl object-display pop" style="animation-delay: ${i * 0.05}s">${emoji}</span>`;
+                }
+                html += `<span class="text-3xl font-bold text-pink-500 mx-2">+</span>`;
+                for (let i = 0; i < num2; i++) {
+                    html += `<span class="text-3xl object-display pop" style="animation-delay: ${(num1 + i) * 0.05}s">${emoji}</span>`;
+                }
+            } else if (operation === '-') {
+                // Show num1 objects with num2 crossed
+                for (let i = 0; i < num1; i++) {
+                    if (i >= num1 - num2) {
+                        html += `<span class="text-3xl object-display opacity-30 line-through">${emoji}</span>`;
+                    } else {
+                        html += `<span class="text-3xl object-display pop" style="animation-delay: ${i * 0.05}s">${emoji}</span>`;
+                    }
+                }
+            } else if (operation === '×') {
+                // Show groups
+                for (let i = 0; i < num1; i++) {
+                    html += `<div class="flex gap-1 bg-yellow-100 rounded-xl p-2 m-1">`;
+                    for (let j = 0; j < num2; j++) {
+                        html += `<span class="text-2xl">${emoji}</span>`;
+                    }
+                    html += `</div>`;
+                }
+            } else if (operation === '÷') {
+                // Show total being divided
+                html += `<div class="flex flex-wrap gap-1 justify-center">`;
+                for (let i = 0; i < num1; i++) {
+                    html += `<span class="text-2xl">${emoji}</span>`;
+                }
+                html += `</div>`;
+                html += `<span class="text-lg font-bold text-orange-500 mx-2">chia cho ${num2} bạn</span>`;
+            }
+            
+            display.innerHTML = html;
+        }
+
+        function generateAnswerOptions(correctAnswer) {
+            const answersDiv = document.getElementById('answers');
+            let options = [correctAnswer];
+            
+            // Generate wrong answers
+            while (options.length < 4) {
+                let wrongAnswer;
+                if (correctAnswer <= 3) {
+                    wrongAnswer = Math.floor(Math.random() * 6) + 1;
+                } else {
+                    wrongAnswer = correctAnswer + (Math.floor(Math.random() * 5) - 2);
+                }
+                if (wrongAnswer > 0 && wrongAnswer !== correctAnswer && !options.includes(wrongAnswer)) {
+                    options.push(wrongAnswer);
+                }
+            }
+            
+            // Shuffle options
+            options.sort(() => Math.random() - 0.5);
+            
+            const colors = [
+                'from-red-400 to-red-500',
+                'from-blue-400 to-blue-500',
+                'from-green-400 to-green-500',
+                'from-purple-400 to-purple-500'
+            ];
+            
+            const animals = ['🐱', '🐶', '🐰', '🐻'];
+            
+            answersDiv.innerHTML = options.map((opt, i) => `
+                <button onclick="checkAnswer(${opt}, this)" 
+                    class="btn-answer bg-gradient-to-r ${colors[i]} text-white p-4 rounded-2xl text-4xl font-extrabold flex items-center justify-center gap-2 hover:brightness-110">
+                    <span>${animals[i]}</span>
+                    <span>${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function checkAnswer(answer, button) {
+            if (answered) return;
+            answered = true;
+            
+            const resultMessage = document.getElementById('result-message');
+            const resultIcon = document.getElementById('result-icon');
+            const resultText = document.getElementById('result-text');
+            const questionCard = document.getElementById('question-card');
+            
+            if (answer === currentAnswer) {
+                // Correct!
+                score += 10;
+                correct++;
+                playSound('correct');
+                
+                button.classList.add('ring-4', 'ring-green-400', 'bg-green-500');
+                questionCard.classList.add('celebrate');
+                
+                resultIcon.textContent = '🎉';
+                resultText.textContent = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+                resultText.className = 'text-2xl font-bold text-green-600';
+                
+                document.getElementById('mascot-message').textContent = '🥳 Đúng rồi! Bé giỏi quá!';
+                
+                // Create celebration stars
+                createCelebration();
+            } else {
+                // Wrong
+                playSound('wrong');
+                
+                button.classList.add('ring-4', 'ring-red-400', 'opacity-50');
+                questionCard.classList.add('shake');
+                
+                resultIcon.textContent = '💪';
+                resultText.innerHTML = `${wrongMessages[Math.floor(Math.random() * wrongMessages.length)]}<br>Đáp án đúng là: <span class="text-purple-600">${currentAnswer}</span>`;
+                resultText.className = 'text-2xl font-bold text-orange-600';
+                
+                document.getElementById('mascot-message').textContent = '😊 Không sao, lần sau bé sẽ làm được!';
+                
+                // Highlight correct answer
+                document.querySelectorAll('.btn-answer').forEach(btn => {
+                    if (btn.textContent.includes(currentAnswer)) {
+                        btn.classList.add('ring-4', 'ring-green-400', 'animate-pulse');
+                    }
+                });
+            }
+            
+            // Update score display
+            document.getElementById('score').textContent = score;
+            document.getElementById('correct').textContent = correct;
+            
+            resultMessage.classList.remove('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+            
+            questionNum++;
+        }
+
+        function createCelebration() {
+            const emojis = ['⭐', '🌟', '✨', '💫', '🎉', '🎊', '❤️', '💖'];
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'star-burst';
+                    star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    document.body.appendChild(star);
+                    setTimeout(() => star.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function resetGame() {
+            score = 0;
+            correct = 0;
+            questionNum = 1;
+            document.getElementById('score').textContent = score;
+            document.getElementById('correct').textContent = correct;
+            generateQuestion();
+        }
+
+        // Initialize
+        window.onload = function() {
+            setOperation('+');
+        };
+    </script>
+</body>
+</html>
